@@ -1,4 +1,8 @@
-﻿Shader "Unity Shaders Book/Chapter6/DiffuseVertexLevel"{
+﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+// 基本光照模型 C_diffuse = (C_light * m_diffuse) max(0,n*l)
+//                  入射光线的颜色和强度 * 材质漫反射系数 * （表面法线 * 光源方向）
+
+Shader "Unity Shaders Book/Chapter6/DiffuseVertexLevel"{
 	Properties{
 		_Diffuse("Diffuse",Color) = (1,1,1,1)
 	}
@@ -27,6 +31,7 @@
 
 	v2f vert(a2v v) {
 		v2f o;
+		//把顶点坐标从模型空间转换到裁剪空间中
 		o.pos = UnityObjectToClipPos(v.vertex);
 		//获得场景光
 		fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
@@ -42,11 +47,11 @@
 	}
 
 	fixed4 frag(v2f i) : SV_Target{
-		return fixed4(i.color,1.0);
+		return fixed4(i.color, 1.0);
 	}
 
 		ENDCG
 	}
 	}
-		Fallback "Diffuse"
+		FallBack "Diffuse"
 }
