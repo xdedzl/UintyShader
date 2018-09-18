@@ -1,9 +1,9 @@
 ﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 
-// 基本光照模型 C_diffuse = (C_light * m_diffuse) max(0,n*l)
-//                  入射光线的颜色和强度 * 材质漫反射系数 * （表面法线 * 光源方向）
+// 半兰伯特光照模型 C_diffuse = (C_light * m_diffuse) （α（n*l）+ β） 绝大多数情况下α和β都为0.5
+//                  入射光线的颜色和强度 * 材质漫反射系数 * （α * （表面法线 * 光源方向） + β）
 
-Shader "Unity Shaders Book/Chapter6/DiffusePixelLevel"{
+Shader "Unity Shaders Book/Chapter6/HalfLambert"{
 	Properties{
 		_Diffuse("Diffuse",Color) = (1,1,1,1)
 	}
@@ -49,9 +49,8 @@ Shader "Unity Shaders Book/Chapter6/DiffusePixelLevel"{
 		// 获得世界空间的光方向
 		fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
 		// 计算漫反射(saturate函数是把参数截取到[0,1])
-		fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * saturate(dot(worldNormal, worldLightDir)); //基本关照模型
-		/*fixed halfLambert = dot(worldNormal, worldLightDir) * 0.5 + 0.5;
-		fixed3 diffuse = _LightColor0.rgb * halfLambert;*/
+		fixed halfLambert = dot(worldNormal, worldLightDir) * 0.5 + 0.5;
+		fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * halfLambert;
 
 		fixed3 color = ambient + diffuse;
 
