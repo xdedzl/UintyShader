@@ -49,7 +49,7 @@ Shader "Unity Shaders Book/Chapter6/HalfLambert"{
 		// 获得世界空间的光方向
 		fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
 		// 计算漫反射(saturate函数是把参数截取到[0,1])
-		fixed halfLambert = dot(worldNormal, worldLightDir) * 0.5 + 0.5;
+		fixed halfLambert = dot(worldNormal, worldLightDir) * 0.6 + 0.4;
 		fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * halfLambert;
 
 		fixed3 color = ambient + diffuse;

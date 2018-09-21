@@ -9,7 +9,7 @@ Shader "Unity Shaders Book/Chapter6/DiffuseVertexLevel"{
 
 		SubShader{
 		Pass{
-		Tags{ "LightMode" = "ForwardBase" }// 定义LightMode可以得到Unity内置光照变量
+		Tags{ "LightMode" = "ForwardBase" }// 定义LightMode可以得到Unity内置光照变量 这一句可以注释掉
 
 		CGPROGRAM
 
@@ -25,7 +25,7 @@ Shader "Unity Shaders Book/Chapter6/DiffuseVertexLevel"{
 	};
 
 	struct v2f {
-		float4 pos : SV_POSITION;
+		float4 pos : SV_POSITION; // 顶点在裁剪空间中的位置空间
 		fixed3 color : COLOR;
 	};
 
@@ -46,8 +46,8 @@ Shader "Unity Shaders Book/Chapter6/DiffuseVertexLevel"{
 		return o;
 	}
 
-	fixed4 frag(v2f i) : SV_Target{
-		return fixed4(i.color, 1.0);
+	fixed4 frag(v2f o) : SV_Target{
+		return fixed4(o.color, 1.0);
 	}
 
 		ENDCG
