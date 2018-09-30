@@ -1,4 +1,5 @@
-﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+﻿// C_specular = (C_light * m_specualr) * （max(0, v*r)的m_gloss次方）
+//      入射光的颜色和强度 * 材质的高光反射系数     v：视角方向   r:反射方向 = l - 2(n*l)*n    n:表面法线  l:光源方向
 
 Shader "Unity Shaders Book/Chapter 6/Specular Vertex-Level" {
 

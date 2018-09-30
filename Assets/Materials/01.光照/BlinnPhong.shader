@@ -1,7 +1,7 @@
 ﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 // Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
 
-Shader "Unity Shaders Book/Chapter 6/Specular Pixel-Level" {
+Shader "Unity Shaders Book/Chapter 6/BlinnPhong" {
 
 	Properties{
 		_Diffuse("Diffuse", Color) = (1, 1, 1, 1)
@@ -51,7 +51,8 @@ Shader "Unity Shaders Book/Chapter 6/Specular Pixel-Level" {
 
 		fixed3 reflectDir = normalize(reflect(-worldLightDir, worldNormal)); // 计算发射方向
 		fixed3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.worldPos.xyz); // 计算观察者方向
-		fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(saturate(dot(reflectDir, viewDir)), _Gloss);
+		fixed3 halfDir = normalize(worldLightDir + viewDir);
+		fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(reflectDir, halfDir)), _Gloss);
 
 		return fixed4(ambient + diffuse + specular, 0.1);
 	}
