@@ -3,7 +3,7 @@
 // 半兰伯特光照模型 C_diffuse = (C_light * m_diffuse) （α（n*l）+ β） 绝大多数情况下α和β都为0.5
 //                  入射光线的颜色和强度 * 材质漫反射系数 * （α * （表面法线 * 光源方向） + β）
 
-Shader "Unity Shaders Book/Chapter6/HalfLambert"{
+Shader "Unity Shaders Book/Chapter 6/HalfLambert"{
 	Properties{
 		_Diffuse("Diffuse",Color) = (1,1,1,1)
 	}

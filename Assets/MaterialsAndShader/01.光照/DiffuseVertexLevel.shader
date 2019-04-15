@@ -1,16 +1,15 @@
 ﻿// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
-
 // 基本光照模型 C_diffuse = (C_light * m_diffuse) max(0,n*l)
 //                  入射光线的颜色和强度 * 材质漫反射系数 * （表面法线 * 光源方向）
 
-Shader "Unity Shaders Book/Chapter6/DiffusePixelLevel"{
+Shader "Unity Shaders Book/Chapter 6/DiffuseVertexLevel"{
 	Properties{
 		_Diffuse("Diffuse",Color) = (1,1,1,1)
 	}
 
 		SubShader{
 		Pass{
-		Tags{ "LightMode" = "ForwardBase" }// 定义LightMode可以得到Unity内置光照变量
+		Tags{ "LightMode" = "ForwardBase" }// 定义LightMode可以得到Unity内置光照变量 这一句可以注释掉
 
 		CGPROGRAM
 
@@ -26,36 +25,29 @@ Shader "Unity Shaders Book/Chapter6/DiffusePixelLevel"{
 	};
 
 	struct v2f {
-		float4 pos : SV_POSITION;
-		float3 worldNormal : TEXCOORD0;
+		float4 pos : SV_POSITION; // 顶点在裁剪空间中的位置空间
+		fixed3 color : COLOR;
 	};
 
 	v2f vert(a2v v) {
 		v2f o;
 		// 把顶点坐标从模型空间转换到裁剪空间中
 		o.pos = UnityObjectToClipPos(v.vertex);
-		// 转换法线方向从模型空间到世界空间
-		o.worldNormal = mul(v.normal, (float3x3)unity_WorldToObject);
-
-		return o;
-	}
-
-	fixed4 frag(v2f i) : SV_Target{
-
 		// 获得场景光
 		fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
 		// 转换法线方向从模型空间到世界空间
-		fixed3 worldNormal = normalize(i.worldNormal);
+		fixed3 worldNormal = normalize(mul(v.normal, (float3x3)unity_WorldToObject));
 		// 获得世界空间的光方向
-		fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
+		fixed3 worldLight = normalize(_WorldSpaceLightPos0.xyz);
 		// 计算漫反射(saturate函数是把参数截取到[0,1])
-		fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * saturate(dot(worldNormal, worldLightDir)); //基本关照模型
-		/*fixed halfLambert = dot(worldNormal, worldLightDir) * 0.5 + 0.5;
-		fixed3 diffuse = _LightColor0.rgb * halfLambert;*/
+		fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * saturate(dot(worldNormal, worldLight));
 
-		fixed3 color = ambient + diffuse;
+		o.color = ambient + diffuse;
+		return o;
+	}
 
-		return fixed4(color, 1.0);
+	fixed4 frag(v2f o) : SV_Target{
+		return fixed4(o.color, 1.0);
 	}
 
 		ENDCG
