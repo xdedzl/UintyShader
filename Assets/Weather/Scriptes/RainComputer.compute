@@ -1,0 +1,35 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWStructuredBuffer<float4x4> matrixBuffer;
+RWStructuredBuffer<float2> timeSliceBuffer; // 计时器，x为计时器数值，y为计时器速度
+float _DeltaFlashSpeed;  // c#脚本传入
+
+// 返回值区间（-1，1）
+inline float2 LocalRand(float2 seed){
+	return frac(cos(sin(seed) * 547.54584533) * 354.19757984) * 2 - 1;
+}
+
+// 返回值区间 （0，1）
+inline float LocalRand(float seed){
+	return frac(cos(sin(seed * 431.2543) * 1548.9824) * 3254.2);
+}
+
+[numthreads(1023,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	if(timeSliceBuffer[id.x].x>1){
+		timeSliceBuffer[id.x].x = 0;
+		timeSliceBuffer[id.y] = 0.8 + LocalRand(timeSliceBuffer[id.x].y) * 0.4;
+
+		float4x4 mtx = matrixBuffer[id.x];
+		float2 seed = float2(mtx._m03,mtx._m13);
+		seed = LocalRand(seed);
+		mtx._m03 = seed.x;
+		mtx._m13 = seed.y;
+		matrixBuffer[id.x] = mtx;
+	}
+	timeSliceBuffer[id.x].x +=  _DeltaFlashSpeed * timeSliceBuffer[id.x].x;
+}
