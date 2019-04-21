@@ -2,23 +2,23 @@
 	Properties{
 		_Color("Color Tint",Color) = (1.0,1.0,1.0,1.0)
 	}
-		SubShader{
-			Pass{
-				CGPROGRAM
+	SubShader{
+		Pass{
+			CGPROGRAM
 
-				#pragma vertex vert
-				#pragma fragment frag
+			#pragma vertex vert
+			#pragma fragment frag
 
-				//在CG代码中，需要定义一个与属性名称和类型都匹配的变量
-				fixed4 _Color;
+			//在CG代码中，需要定义一个与属性名称和类型都匹配的变量
+			fixed4 _Color;
 
 			//使用一个结构体来定义定点着色器的输入
 			struct a2v {
-				//POSITION语义 ： 用模型空间的顶点坐标填充vertex变量
+				// 用模型空间的顶点坐标填充vertex变量
 				float4 vertex : POSITION;
-				//NORMAL语义 ： 用模型空间的法线方向填充normal变量
+				// 用模型空间的法线方向填充normal变量
 				float3 normal : NORMAL;
-				//。。。		模型的第一套纹理坐标
+				// 模型的第一套纹理坐标
 				float4 texcoord : TEXCOORD0;
 			};
 
@@ -42,7 +42,7 @@
 			fixed4 frag(v2f i) : SV_Target{ 
 				fixed3 c = i.color;
 				////将差值后的i.color显示到屏幕上
-				//return fixed4(i.color,1.0);
+				//return float4(i.color,0);
 
 				//使用_Color属性来控制输出颜色
 				c *= _Color.rgb;

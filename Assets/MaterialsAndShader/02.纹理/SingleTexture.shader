@@ -1,6 +1,4 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
-Shader "Unity Shaders Book/Chapter 7/Single Texture"{
+﻿Shader "Unity Shaders Book/Chapter 7/Single Texture"{
 
 	Properties{
 		_Color("Color Tint", Color) = (1,1,1,1)
@@ -11,6 +9,7 @@ Shader "Unity Shaders Book/Chapter 7/Single Texture"{
 
 	SubShader{
 		Pass{
+			// 光照模式
 			Tags{"LightMode" = "ForwardBase"}
 
 			CGPROGRAM
@@ -24,8 +23,8 @@ Shader "Unity Shaders Book/Chapter 7/Single Texture"{
 			// 纹理名_ST声明某个纹理的属性，.xy是缩放.zw是偏移
 			float4 _MainTex_ST;
 			fixed4 _Specular;
-			float4 _Gloss;
-
+			float _Gloss;
+			 
 			struct a2v {
 				float4 vertex : POSITION;
 				float3 normal : NORMAL;
@@ -59,7 +58,7 @@ Shader "Unity Shaders Book/Chapter 7/Single Texture"{
 				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
 				fixed3 diffuse = _LightColor0.rgb * albedo * max(0,dot(worldNormal,worldLightDir));
 
-				fixed3 viewDir = normalize(UnityWorldSpaceLightDir(i.worldPos));
+				fixed3 viewDir = normalize(UnityWorldSpaceViewDir(i.worldPos));
 				fixed3 halfDir = normalize(worldLightDir + viewDir);
 				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0,dot(worldNormal,halfDir)),_Gloss);
 				return fixed4(ambient + diffuse + specular, 1.0);
