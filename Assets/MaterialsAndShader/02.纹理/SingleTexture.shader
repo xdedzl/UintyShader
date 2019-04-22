@@ -44,8 +44,8 @@
 				o.worldNormal = UnityObjectToWorldNormal(v.normal);
 				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 
-				//o.uv = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
-				o.uv = TRANSFORM_TEX(v.texcoord,_MainTex);  // 内置函数实现了上面注释的算法
+				o.uv = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+				//o.uv = TRANSFORM_TEX(v.texcoord,_MainTex);  // 内置函数实现了上面注释的算法
 				return o;
 			}
 
@@ -55,12 +55,12 @@
 
 				// tex2D获取纹理对应坐标的纹素值
 				fixed3 albedo = tex2D(_MainTex,i.uv).rgb * _Color.rgb;
-				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
-				fixed3 diffuse = _LightColor0.rgb * albedo * max(0,dot(worldNormal,worldLightDir));
+				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;  // 环境光照
+				fixed3 diffuse = _LightColor0.rgb * albedo * max(0,dot(worldNormal,worldLightDir)); // 漫反射光照
 
 				fixed3 viewDir = normalize(UnityWorldSpaceViewDir(i.worldPos));
 				fixed3 halfDir = normalize(worldLightDir + viewDir);
-				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0,dot(worldNormal,halfDir)),_Gloss);
+				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0,dot(worldNormal,halfDir)),_Gloss);  // 高光反射光照
 				return fixed4(ambient + diffuse + specular, 1.0);
 			}
 

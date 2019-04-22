@@ -1,6 +1,7 @@
 ﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 // 法线分量 [-1,1],像素分量 [0,1] 映射关系 pixel = (normal + 1) / 2
 
+// 凹凸映射，切线空间
 Shader "Unity Shaders Book/Chapter 7/Noraml Map Tanegent Space"{
 
 	Properties{
@@ -55,20 +56,17 @@ Shader "Unity Shaders Book/Chapter 7/Noraml Map Tanegent Space"{
                 o.uv.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;  // o.uv.xy存储_MainTex的纹理坐标
                 o.uv.zw = v.texcoord.xy * _BumpMap_ST.xy + _BumpMap_ST.zw;  // o.uv.zw存储_BumpMap的纹理坐标
 
-                // Compute the binormal
-				float3 binormal = cross( normalize(v.normal), normalize(v.tangent.xyz) ) * v.tangent.w;
+                // Compute the binormal(次法线)
+				float3 binormal = cross(normalize(v.normal), normalize(v.tangent.xyz)) * v.tangent.w;
                 // Construct a matrix which transform vectors from object space to tangent space
 				float3x3 rotation = float3x3(v.tangent.xyz, binormal, v.normal);
-                // Or just use the built-in macro
-                //TANGENT_SPACE_ROTATION;
 
                 // Transform the light direction from object space to tangent space
                 o.lightDir = mul(rotation, ObjSpaceLightDir(v.vertex)).xyz;
-                // Transform the view direction from object space to tangent space
                 o.viewDir = mul(rotation, ObjSpaceViewDir(v.vertex)).xyz;
 
                 return o;
-            }
+            } 
 
 			 fixed4 frag(v2f i) : SV_Target {                
                 fixed3 tangentLightDir = normalize(i.lightDir);
@@ -81,7 +79,7 @@ Shader "Unity Shaders Book/Chapter 7/Noraml Map Tanegent Space"{
 				tangentNormal.xy = (packedNormal.xy * 2 - 1) * _BumpScale;
 				tangentNormal.z = sqrt(1.0 - saturate(dot(tangentNormal.xy, tangentNormal.xy)));
 				
-                // Or mark the texture as "Normal map", and use the built-in funciton或将纹理标记为“法线贴图”，并使用内置的功能。
+                // Or mark the texture as "Normal map", and use the built-in funciton
                 tangentNormal = UnpackNormal(packedNormal);
                 tangentNormal.xy *= _BumpScale;
                 tangentNormal.z = sqrt(1.0 - saturate(dot(tangentNormal.xy, tangentNormal.xy)));
