@@ -1,18 +1,21 @@
-﻿Shader "Unity Shaders Book/Chapter 8/Alpha Test"
+﻿
+Shader "Unity Shaders Book/Chapter 8/Alpha Blend"
 {
 	Properties
 	{
 		_Color("Main Tint", Color) = (1,1,1,1)
 		_MainTex("Main Tex", 2D) = "white" {}
-		_Cutoff("Alpha Cutoff", Range(0,1)) = 0.5  // 用于透明度测试时使用的判断条件
+		_AlphaScale("Alpha Scale", Range(0,1)) = 0.5  // 用于透明度测试时使用的判断条件
 	}
 	SubShader
 	{
 		//    指定渲染队列             不受投影器影响              归入提前定义的组
-		Tags { "Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout"}
+		Tags { "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
 
 		Pass{
 			Tags { "LightMode" = "ForwardBase"}
+			ZWrite Off    // 深度写入关闭
+			Blend SrcAlpha OneMinusSrcAlpha   // 设置混合模式
 
 			CGPROGRAM
 
@@ -23,7 +26,7 @@
 			fixed4 _Color;
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
-			fixed _Cutoff;
+			fixed _AlphaScale;
 
 			struct a2v {
 				float4 vertex : POSITION;
@@ -53,15 +56,10 @@
 
 				fixed4 texColor = tex2D(_MainTex, i.uv);
 
-				clip(texColor.a - _Cutoff);
-				// if((texColor.a - _Cutoff) <= 0.0){
-				//     discard;
-				// }
-
 				fixed3 albedo = texColor.rgb * _Color.rgb;
 				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
 				fixed3 diffuse = _LightColor0.rgb * albedo * max(0,dot(worldNormal, worldLightDir));
-				return fixed4(ambient + diffuse,1.0);
+				return fixed4(ambient + diffuse,texColor.a* _AlphaScale);
 			}
 
 			ENDCG
