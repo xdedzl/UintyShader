@@ -1,5 +1,4 @@
-﻿
-Shader "Unity Shaders Book/Chapter 8/Alpha Blend"
+﻿Shader "Unity Shaders Book/Chapter 8/Alpha Blend"
 {
 	Properties
 	{
