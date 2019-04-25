@@ -4,7 +4,7 @@ Shader "Unity Shaders Book/Chapter 7/Ramp Texture"
 {
     Properties
     {
-                    _Color ("Color", Color) = (1,1,1,1)
+        _Color ("Color", Color) = (1,1,1,1)
         _RampTex ("Ramp Tex", 2D) = "white" {}
         _Specular ("Specular", Color) = (1,1,1,1)
         _Gloss ("Gloss", Range(8,256)) = 20
@@ -12,14 +12,14 @@ Shader "Unity Shaders Book/Chapter 7/Ramp Texture"
     SubShader
     {
         Pass{
-                       Tags { "LightMode"="ForwardBase" }
+            Tags { "LightMode"="ForwardBase" }
 
             CGPROGRAM
 
             #pragma vertex vert
-                       #pragma fragment frag
+            #pragma fragment frag
             #include "Lighting.cginc"
-              
+
             fixed4 _Color;
             sampler2D _RampTex;
             float4 _RampTex_ST;
