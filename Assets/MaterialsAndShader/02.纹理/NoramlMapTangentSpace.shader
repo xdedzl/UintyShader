@@ -58,6 +58,7 @@ Shader "Unity Shaders Book/Chapter 7/Noraml Map Tanegent Space"{
 
                 // Compute the binormal(次法线)
 				float3 binormal = cross(normalize(v.normal), normalize(v.tangent.xyz)) * v.tangent.w;
+
                 // Construct a matrix which transform vectors from object space to tangent space
 				float3x3 rotation = float3x3(v.tangent.xyz, binormal, v.normal);
 
@@ -72,17 +73,20 @@ Shader "Unity Shaders Book/Chapter 7/Noraml Map Tanegent Space"{
                 fixed3 tangentLightDir = normalize(i.lightDir);
                 fixed3 tangentViewDir = normalize(i.viewDir);
 
-                // Get the texel in the normal map在法线贴图中得到贴图
+                // Get the texel in the normal map
                 fixed4 packedNormal = tex2D(_BumpMap, i.uv.zw);
                 fixed3 tangentNormal;
-                // If the texture is not marked as "Normal map"如果纹理没有被标记为“法线贴图”
-				tangentNormal.xy = (packedNormal.xy * 2 - 1) * _BumpScale;
-				tangentNormal.z = sqrt(1.0 - saturate(dot(tangentNormal.xy, tangentNormal.xy)));
+
+
+                // If the texture is not marked as "Normal map"
+				//tangentNormal.xy = (packedNormal.xy * 2 - 1) * _BumpScale;
+				//tangentNormal.z = sqrt(1.0 - saturate(dot(tangentNormal.xy, tangentNormal.xy))); 
 				
                 // Or mark the texture as "Normal map", and use the built-in funciton
                 tangentNormal = UnpackNormal(packedNormal);
                 tangentNormal.xy *= _BumpScale;
-                tangentNormal.z = sqrt(1.0 - saturate(dot(tangentNormal.xy, tangentNormal.xy)));
+				// 由于是单位向量，缩放xy后还要对z进行更改
+				tangentNormal.z = sqrt(1.0 - saturate(dot(tangentNormal.xy, tangentNormal.xy)));
 
                 fixed3 albedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;
 
