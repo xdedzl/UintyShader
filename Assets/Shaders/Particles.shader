@@ -4,8 +4,8 @@ Shader "Custom/Particles"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-		_Speed("Speed", Float) = 10
-		_AccelerationValue("AccelerationValue", Float) = 10
+		_InitSpeed("Init Speed", Float) = 0
+		_Acceleration("Acceleration", Float) = 5
         _ContinueTime("Current Time",Int) = 2
         _Color("Color",Color) = (1,1,1,1)
     }
@@ -21,8 +21,8 @@ Shader "Custom/Particles"
             #pragma fragment frag
 
             sampler2D _MainTex;
-            float _Speed;
-            float _AccelerationValue;
+            float _InitSpeed;
+            float _Acceleration;
             float _ContinueTime;
             fixed4 _Color;
 
@@ -56,13 +56,12 @@ Shader "Custom/Particles"
                 float3 v2 = IN[2].vertex - IN[0].vertex;
 
                 float3 normal = normalize(cross(v1,v2));
-                float3 tempPos = (IN[0].vertex + IN[1].vertex + IN[2].vertex) / 3;
+                float3 pos = (IN[0].vertex + IN[1].vertex + IN[2].vertex) / 3;
 
-                float realTime = _Time.y % _ContinueTime;
-                float a = _AccelerationValue + 
-                tempPos += normal * (_Speed * realTime + 0.5 * _AccelerationValue * pow(realTime, 2));
+                float time = _Time.y % _ContinueTime;
+                pos += normal * (_InitSpeed * time + 0.5 * _Acceleration * pow(time, 2));
 
-                o.vertex = UnityObjectToClipPos(tempPos);
+                o.vertex = UnityObjectToClipPos(pos);
 
                 o.uv = (IN[0].uv + IN[1].uv + IN[2].uv) / 3;
 
@@ -71,8 +70,8 @@ Shader "Custom/Particles"
 
             fixed4 frag (g2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv) * _Color;
-                return col;
+                fixed4 color = tex2D(_MainTex, i.uv) * _Color;
+                return color;
             }
 
             ENDCG
