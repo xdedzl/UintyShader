@@ -6,7 +6,6 @@ Shader "XDEDZL/Note Bounce"
 	Properties{
 		_Color("Color Tint", Color) = (1,1,1,1)
 		_MainTex("Main Tex", 2D) = "white" {}
-        _NoiseTex("Noise Tex",2D) = "white"{}
 		_Specular("Specular",Color) = (1,1,1,1)
 		_Gloss("Gloss",Range(8.0,256)) = 20
         _Intensity("Intensity",Float) = 1
@@ -27,8 +26,6 @@ Shader "XDEDZL/Note Bounce"
 			sampler2D _MainTex;
 			// 纹理名_ST声明某个纹理的属性，.xy是缩放.zw是偏移
 			float4 _MainTex_ST;
-            sampler2D _NoiseTex;
-            float4 _NoiseTex_ST;
 			fixed4 _Specular;
 			float _Gloss;
             float _Intensity;

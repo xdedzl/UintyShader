@@ -6,7 +6,7 @@ Shader "XDEDZL/Particles"
         _MainTex ("Texture", 2D) = "white" {}
 		_InitSpeed("Init Speed", Float) = 0
 		_Acceleration("Acceleration", Float) = 5
-        _ContinueTime("Current Time",Int) = 2
+        _ContinueTime("Continue Time",Int) = 2
         _Color("Color",Color) = (1,1,1,1)
     }
     SubShader

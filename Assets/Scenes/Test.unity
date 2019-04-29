@@ -297,8 +297,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 861533586}
-  m_LocalRotation: {x: -0.019552182, y: -0.79277706, z: 0.025849538, w: -0.6086494}
-  m_LocalPosition: {x: -65.37431, y: 16.714542, z: 9.175999}
+  m_LocalRotation: {x: 0.1848692, y: -0.13776468, z: 0.026182033, w: 0.9727069}
+  m_LocalPosition: {x: 14.985836, y: 1.478758, z: -3.1250236}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -534,7 +534,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887232296}
-  m_Mesh: {fileID: 4300000, guid: 2cfe10eb23a4a3640a8f65386534d8a8, type: 3}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1887232299
 Transform:
   m_ObjectHideFlags: 0
@@ -543,7 +543,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887232296}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.94, y: 0, z: 0}
+  m_LocalPosition: {x: 14.29, y: -0.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -728,8 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 348af20e13c3c5747bbc15accc837b99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audio: {fileID: 2121797452}
-  displacementAmount: 0
+  fireworksObj: {fileID: 1887232296}
 --- !u!82 &2121797452
 AudioSource:
   m_ObjectHideFlags: 0
