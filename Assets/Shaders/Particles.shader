@@ -1,5 +1,5 @@
 ﻿// 模型粒子化效果
-Shader "Custom/Particles"
+Shader "XDEDZL/Particles"
 {
     Properties
     {

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PostEffectsBase : MonoBehaviour
+public class NoteBounce : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    public new AudioSource audio;
+    private Material material;
     void Start()
     {
-        
+        material = GetComponent<MeshRenderer>().material;
     }
 
     // Update is called once per frame
