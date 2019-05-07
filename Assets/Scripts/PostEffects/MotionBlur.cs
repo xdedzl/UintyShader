@@ -20,6 +20,9 @@ public class MotionBlur : PostEffectsBase
     [Range(0.0f, 0.9f)]
     public float blurAmount = 0.5f;
 
+    /// <summary>
+    /// 用于保存之前的影像
+    /// </summary>
     private RenderTexture accumulationTexture;
 
     void OnDisable()
