@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,5 +38,22 @@ public class NoteBounce : MonoBehaviour
             fireworksMat.SetFloat("_ContinueTime", 0);
         }
         material.SetFloat("_Intensity", intensity);
+    }
+}
+
+
+public class AA
+{
+    private void c()
+    {
+
+    }
+}
+
+public static class CC
+{
+    public static void c(this AA a)
+    {
+        a.c();
     }
 }
